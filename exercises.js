@@ -4,16 +4,27 @@
 
 function multiplyArguments() {
 	//use the arguments keyword to multiply all of the arguments together and return the product
+	var result = 1;
+	if (arguments.length === 0 ) {
+		return 0;
+	} else {
+		for (var i = 0; i < arguments.length; i++) {
+			result = result * arguments[i];
+		} return result;
+	}
 	//if no arguments are passed in return 0
 	//if one argument is passed in just return it
 }
 
 function invokeCallback(cb) {
-	//invoke cb
+	cb(); //invoke cb
 }
 
 function sumArray(numbers, cb) {
-	//sum up all of the integers in the numbers array
+	var sum = numbers.reduce(function(acc, val){
+		return acc + val;
+	}, 0);//sum up all of the integers in the numbers array
+	cb(sum);
 	//pass the result to cb
 	//no return is necessary
 }
@@ -21,30 +32,64 @@ function sumArray(numbers, cb) {
 function forEach(arr, cb) {
 	//iterate over arr and pass its values to cb one by one
 	//hint: you will be invoking cb multiple times (once for each value in the array)
+	arr.forEach( function(element, index, arr) {
+		cb(arr[index]);
+	});
 }
 
 function map(arr, cb) {
 	//create a new array
 	//iterate over each value in arr, pass it to cb, then place the value returned from cb into the new arr
 	//the new array should be the same length as the array argument
+	var newArray = [];
+	arr.map(function(x) {
+		newArray.push(cb(x));
+	});
+	return newArray;
 }
 
 function getUserConstructor() {
 	//create a constructor called User
 	//it should accept an options object with username, name, email, and password properties
 	//in the constructor set the username, name, email, and password properties
+
+	function User(options) {
+		this.username = options.username;
+		this.name = options.name;
+		this.email= options.email;
+		this.password = options.password;
+		}
+
 	//the constructor should have a method 'sayHi' on its prototype that returns the string 'Hello, my name is {{name}}'
 	//{{name}} should be the name set on each instance
+		User.prototype.sayHi = function() {
+			return 'Hello, my name is ' + this.name;
+		};
+
 	//return the constructor
+		return User;
 }
+
+
 
 function addPrototypeMethod(Constructor) {
 	//add a method to the constructor's prototype
 	//the method should be called 'sayHi' and should return the string 'Hello World!'
+	Constructor.prototype.sayHi = function () {
+		return 'Hello World!';
+	};
 }
 
 function addReverseString() {
 	//add a method to the string constructor's prototype that returns a reversed copy of the string
+	String.prototype.reverse = function() {
+		var reversedString = '';
+		var i = this.length -1;
+		for(i; i >= 0; i-- ) {
+			reversedString = reversedString.concat(this.charAt(i));
+		} return reversedString;
+
+	};
 	//name this method reverse
 	//hint:
 	//you will need to use 'this' inside of reverse
@@ -53,24 +98,71 @@ function addReverseString() {
 function nFactorial(n) {
 	//return the factorial for n
 	//solve this recursively
+	if (n === 0) {
+		return 1;
+	}
+	return n * nFactorial(n-1);
+	}
 	//example:
 	//the factorial of 3 is 6 (3 * 2 * 1)
-}
 
-function cacheFunction(cb) {
-	//Extra Credit
+
+// ---------------------------------extra credit-----------------
+// //Extra Credit
 	//use closure to create a cache for the cb function
+
 	//the function that you return should accept a single argument and invoke cb with that argument
+
 	//when the function you return is invoked with an argument it should save that argument and its result
 	//when the function you return is called again with an argument that it has seen before it should not call cb
 	//but should instead directly returned the previous result
+
 	//example:
 	//cb -> function(x) { return x * x; }
 	//if the function you return is invoked with 5 it would pass 5 to cb(5) and return 25
 	//if the function you return is invoked again with 5 it will look on an object in the closure scope
 	//and return 25 directly and will not invoke cb again
+
+function cacheFunction(arg) {
+	if (!remember) {
+		var remember = [];
+	} else {
+		// check cache for argument
+		if ( remember.map( function ())// there's a match
+			){  // return cached answer
+		} else {
+			// save this one to cache and return it
+			var x = new Cached(cb)
+			remember.push(x); // saves to cache
+		}
+	}
+
+
+
+	//if (remember.cache.hasOwnProperty(cb.arguments)) {
+
+	//}
+	console.log(remember);
+	return remember;
+
 }
 
+function Cached(arg, result) { // object constructor
+		this.arg = arg;
+		this.result = result;
+		}
+
+		var x = new Cached(arg, result);
+
+
+
+
+function cb() {
+	var arg = arguments[0];
+	cacheFunction(arg);
+}
+
+cb(45);
 
 //Do not modify code below this line.
 ////--------------------------------
